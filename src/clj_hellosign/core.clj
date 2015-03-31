@@ -22,14 +22,26 @@
 
 (ns clj-hellosign.core
   "Core functions for the HelloSign API"
-  (:require [clj-hellosign.util :as util]))
+  (:require [clj-hellosign.util :as util]
+    [clojure.edn :as edn]))
 
 ; Root URL for all API calls
 (defonce api-root "https://api.hellosign.com/v3")
 
-; Define the API key dynamically so it's not visible
-; from other threads.
-(defonce ^:dynamic *hellosign-api-key* nil)
+(defn load-config-file
+  "Loads the clojure data structure defined in the file.
+  EDN (extensible data notiation) ensures there is no arbitrary
+  code execution."
+  [file]
+  (edn/read-string (slurp file)))
+
+; Load the configuration file
+; TODO: Add try/catch to handle non-existent file
+(defonce config (load-config-file "config.clj"))
+
+; Define the API key dynamically so it's not visible from other threads.
+; TODO: If this is the case, then storing it in config might also be an issue?
+(defonce ^:dynamic *hellosign-api-key* (config :hellosign-api-key))
 
 (defmacro with-api-key
   "Binds the specified HelloSign API key to the hellosign-api-key variable and executes the function(s) provided."
