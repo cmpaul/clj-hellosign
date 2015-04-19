@@ -28,9 +28,9 @@
 (defn get-account
   "Creates a GET request for a user account.
   Execute with core/execute."
-  []
+  [& op-data]
   {:operation :get-account})
 
 (defmethod execute :get-account
-  []
+  [op-data]
   (util/get-request *hellosign-api-key* (str api-root "/account")))

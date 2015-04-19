@@ -22,11 +22,16 @@
 
 (ns clj-hellosign.account-test
   (:use [clj-hellosign core account])
-  (:require [clojure.test :as test]))
+  (:require [clojure.test :refer :all]))
 
-; (with-api-key :hellosign-api-key
-;   (def get-account-result (execute :get-account))
-;   (test/deftest account-test
-;     (test/testing "GET account"
-;       (pr get-account-result)
-;       (test/is (= 1 1)))))
+(deftest get-account-test
+  (testing "GET /account"
+    (with-api-key :hellosign-api-key
+      (def get-account-op (get-account))
+      (is (= get-account-op
+    		{:operation :get-account})))))
+  ; (def get-account-result (execute :get-account))
+  ; (test/deftest account-test
+  ;   (test/testing "GET account"
+  ;     (pr get-account-result)
+  ;     (test/is (= 1 1)))))

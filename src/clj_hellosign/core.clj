@@ -44,13 +44,19 @@
 (defonce ^:dynamic *hellosign-api-key* (config :hellosign-api-key))
 
 (defmacro with-api-key
-  "Binds the specified HelloSign API key to the hellosign-api-key variable and executes the function(s) provided."
+  "Binds the specified HelloSign API key to the hellosign-api-key variable and
+  executes the function(s) provided."
   [api-key & fns]
   `(binding [*hellosign-api-key* ~api-key] ~@fns))
 
 (defmulti execute
   "Executes a HelloSign API call.
-  All operations are defined using other clj-hellosign functions that return data structures representing API calls, but that do not execute them.
-  For actually making calls to the HelloSign servers, the execute function must be used.
-  execute expects a HelloSign API key in the context, use the macro with-token to set the token and wrap one or several execute calls."
+  All operations are defined using other clj-hellosign functions that return
+  data structures representing API calls, but that do not execute them. For
+  actually making calls to the HelloSign servers, the execute function must be
+  used. execute expects a HelloSign API key in the context, use the macro
+  with-token to set the token and wrap one or several execute calls."
   :operation)
+
+(defmethod execute :default []
+  nil)
