@@ -57,6 +57,3 @@
   used. execute expects a HelloSign API key in the context, use the macro
   with-token to set the token and wrap one or several execute calls."
   :operation)
-
-(defmethod execute :default []
-  nil)
