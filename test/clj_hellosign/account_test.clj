@@ -26,18 +26,6 @@
 
 (deftest get-account-test
   (testing "GET /account"
-    (with-api-key :hellosign-api-key
-      (testing "operation"
-        (def get-account-op (get-account))
-        (is (= get-account-op
-      		{:operation :get-account})))
-      (testing "result"
-        ; (def get-account-result (execute get-account))
-        (execute get-account)
-        ; (pr get-account-result)
-        (is (= 1 1))))))
-  ; (def get-account-result (execute :get-account))
-  ; (test/deftest account-test
-  ;   (test/testing "GET account"
-  ;     (pr get-account-result)
-  ;     (test/is (= 1 1)))))
+    (def acct (get-account))
+    (println acct)
+    (is (= 1 1))))

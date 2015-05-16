@@ -25,9 +25,6 @@
   (:require [clj-hellosign.util :as util]
     [clojure.edn :as edn]))
 
-; Root URL for all API calls
-(defonce api-root "https://api.hellosign.com/v3")
-
 (defn load-config-file
   "Loads the clojure data structure defined in the file.
   EDN (extensible data notiation) ensures there is no arbitrary
@@ -43,17 +40,14 @@
 ; TODO: If this is the case, then storing it in config might also be an issue?
 (defonce ^:dynamic *hellosign-api-key* (config :hellosign-api-key))
 
+; Root URL for all API calls
+(defonce api-root
+  (if (nil? (config :hellosign-api-root))
+    "https://api.hellosign.com/v3"
+    (config :hellosign-api-root)))
+
 (defmacro with-api-key
   "Binds the specified HelloSign API key to the hellosign-api-key variable and
   executes the function(s) provided."
   [api-key & fns]
   `(binding [*hellosign-api-key* ~api-key] ~@fns))
-
-(defmulti execute
-  "Executes a HelloSign API call.
-  All operations are defined using other clj-hellosign functions that return
-  data structures representing API calls, but that do not execute them. For
-  actually making calls to the HelloSign servers, the execute function must be
-  used. execute expects a HelloSign API key in the context, use the macro
-  with-token to set the token and wrap one or several execute calls."
-  :operation)

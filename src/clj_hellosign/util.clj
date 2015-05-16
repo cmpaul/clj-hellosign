@@ -28,7 +28,12 @@
   "POSTs to a URL using the provided API key and parameters."
   [api-key url params]
   (try
-    (let [result (client/post url {:basic-auth [api-key] :query-params params :throw-exceptions false})]
+    (let [result (client/post url
+      {
+        :insecure? true ; FIXME: Make this conditional
+        :basic-auth [api-key]
+        :query-params params :throw-exceptions false
+      })]
       (json/read-json (:body result)))
     (catch java.lang.Exception e e)))
 
@@ -36,6 +41,10 @@
   "GETs a URL using the provided API key and parameters."
   [api-key url]
   (try
-    (let [result (client/get url {:basic-auth [api-key] :throw-exceptions false})]
+    (let [result (client/get url
+      {
+        :insecure? true ; FIXME: Make this conditional
+        :basic-auth [api-key] :throw-exceptions false
+      })]
       (json/read-json (:body result)))
     (catch java.lang.Exception e e)))
