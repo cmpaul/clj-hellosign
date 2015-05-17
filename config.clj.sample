@@ -1,3 +1,8 @@
+; Copy this file to "config.clj" to customize the API root URL and
+; API key used for running tests.
+;
+; The "config.clj" file is OPTIONAL.
 {
-  :hellosign-api-key "YOUR_KEY_HERE"
+  :hellosign-api-root "https://api.hellosign.com/v3"
+  :hellosign-test-key "YOUR_API_KEY_HERE"
 }
