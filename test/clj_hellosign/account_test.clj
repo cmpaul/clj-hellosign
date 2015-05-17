@@ -80,3 +80,18 @@
       (testing "no result"
         (prn "No API key, skipping test")
         (is (= 1 1))))))
+
+(deftest verify-account-test
+  (testing "POST /account/verify"
+    (testing "operation"
+      (def verify-account-op (verify-account (email "chris@hellosign.com")))
+      (is (= verify-account-op {:operation :verify-account, "email_address" "chris@hellosign.com"})))
+    (if (not (nil? test-api-key))
+      (testing "result"
+        (def verify-account-result (with-api-key test-api-key (execute verify-account-op)))
+        (def account-object (get verify-account-result :account))
+        (is (not (nil? account-object)))
+        (is (not (nil? (get account-object :email_address)))))
+      (testing "no result"
+        (prn "No API key, skipping test")
+        (is (= 1 1))))))

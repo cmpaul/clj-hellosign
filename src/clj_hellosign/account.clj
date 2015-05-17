@@ -63,3 +63,14 @@
 (defmethod execute :create-account [op-data]
   (util/post-request *hellosign-api-key* (str api-root "/account/create")
   (dissoc op-data :operation)))
+
+(defn verify-account
+  "Verifies whether a HelloSign account exists for the given email.
+  NOTE: This method is restricted to paid API users.
+  Execute with core/execute verify-account"
+  [& extra-info]
+  (apply util/merge-maps {:operation :verify-account} extra-info))
+
+(defmethod execute :verify-account [op-data]
+  (util/post-request *hellosign-api-key* (str api-root "/account/verify")
+  (dissoc op-data :operation)))
