@@ -35,7 +35,7 @@
         :query-params params :throw-exceptions false
       })]
       (json/read-json (:body result)))
-    (catch java.lang.Exception e e)))
+  (catch java.lang.Exception e e)))
 
 (defn get-request
   "GETs a URL using the provided API key and parameters."
@@ -47,4 +47,4 @@
         :basic-auth [api-key] :throw-exceptions false
       })]
       (json/read-json (:body result)))
-    (catch java.lang.Exception e e)))
+  (catch java.lang.Exception e e)))

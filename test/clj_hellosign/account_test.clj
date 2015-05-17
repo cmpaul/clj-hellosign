@@ -33,10 +33,14 @@
       ; Make sure the get-account fn returns the correct operation
       (def get-account-op (get-account))
       (is (= get-account-op {:operation :get-account})))
-    (testing "result"
-      ; Make the call to GET /account
-      (def get-account-result (with-api-key test-api-key (execute get-account-op)))
-      ; Make sure the account object is readable and items are accessible
-      (def account-object (get get-account-result :account))
-      (is (not (nil? account-object)))
-      (is (not (nil? (get account-object :email_address)))))))
+    (if (not (nil? test-api-key))
+      (testing "result"
+        ; Make the call to GET /account
+        (def get-account-result (with-api-key test-api-key (execute get-account-op)))
+        ; Make sure the account object is readable and items are accessible
+        (def account-object (get get-account-result :account))
+        (is (not (nil? account-object)))
+        (is (not (nil? (get account-object :email_address)))))
+      (testing "no result"
+        (prn "No API key, skipping test")
+        (is (= 1 1))))))
