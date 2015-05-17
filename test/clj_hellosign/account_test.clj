@@ -62,3 +62,21 @@
       (testing "no result"
         (prn "No API key, skipping test")
         (is (= 1 1))))))
+
+(deftest create-account-test
+  (testing "POST /account/create"
+    (testing "operation"
+      (def test-email (str "clj-test-" (quot (System/currentTimeMillis) 1000) "@example.com"))
+      (def create-account-op (create-account (email test-email)))
+      (is (= create-account-op {:operation :create-account, "email_address" test-email})))
+    (if (not (nil? test-api-key))
+      (testing "result"
+        (def create-account-result
+          (with-api-key test-api-key
+            (execute create-account-op)))
+        (def account-object (get create-account-result :account))
+        (is (not (nil? account-object)))
+        (is (= test-email (get account-object :email_address))))
+      (testing "no result"
+        (prn "No API key, skipping test")
+        (is (= 1 1))))))

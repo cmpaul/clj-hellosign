@@ -41,10 +41,25 @@
 (defn post-account
   "Updates your account settings. Currently this is limited
   to your account callback URL.
-  Execute with core/execute post-account params."
+  Execute with core/execute post-account."
   [& extra-info]
   (apply util/merge-maps {:operation :post-account} extra-info))
 
 (defmethod execute :post-account [op-data]
   (util/post-request *hellosign-api-key* (str api-root "/account")
+  (dissoc op-data :operation)))
+
+(defn email
+  "Creates a data representation of an email address"
+  [e] {"email_address" e})
+
+(defn create-account
+  "Creates a new HelloSign account that is associated with
+  a given email address.
+  Execute with core/execute create-account."
+  [& extra-info]
+  (apply util/merge-maps {:operation :create-account} extra-info))
+
+(defmethod execute :create-account [op-data]
+  (util/post-request *hellosign-api-key* (str api-root "/account/create")
   (dissoc op-data :operation)))
