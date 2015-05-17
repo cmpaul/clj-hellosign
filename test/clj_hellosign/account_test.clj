@@ -44,3 +44,21 @@
       (testing "no result"
         (prn "No API key, skipping test")
         (is (= 1 1))))))
+
+(deftest post-account-test
+  (testing "POST /account"
+    (testing "operation"
+      (def test-callback-url "https://www.google.com")
+      (def post-account-op (post-account (callback-url test-callback-url)))
+      (is (= post-account-op {:operation :post-account, "callback_url" test-callback-url})))
+    (if (not (nil? test-api-key))
+      (testing "result"
+        (def post-account-result
+          (with-api-key test-api-key
+            (execute post-account-op)))
+        (def account-object (get post-account-result :account))
+        (is (not (nil? account-object)))
+        (is (= test-callback-url (get account-object :callback_url))))
+      (testing "no result"
+        (prn "No API key, skipping test")
+        (is (= 1 1))))))

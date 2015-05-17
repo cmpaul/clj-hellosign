@@ -27,9 +27,24 @@
 
 (defn get-account
   "Creates a GET request for a user account.
-  Execute with core/execute."
+  Execute with core/execute get-account."
   []
   {:operation :get-account})
 
-(defmethod execute :get-account [_]
+(defmethod execute :get-account [op-data]
   (util/get-request *hellosign-api-key* (str api-root "/account")))
+
+(defn callback-url
+  "Creates the data representation of an account callback URL"
+  [u] {"callback_url" u})
+
+(defn post-account
+  "Updates your account settings. Currently this is limited
+  to your account callback URL.
+  Execute with core/execute post-account params."
+  [& extra-info]
+  (apply util/merge-maps {:operation :post-account} extra-info))
+
+(defmethod execute :post-account [op-data]
+  (util/post-request *hellosign-api-key* (str api-root "/account")
+  (dissoc op-data :operation)))

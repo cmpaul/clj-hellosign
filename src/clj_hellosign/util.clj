@@ -1,28 +1,44 @@
-; The MIT License (MIT)
-;
-; Copyright (C) 2015 hellosign.com
-;
-; Permission is hereby granted, free of charge, to any person obtaining a copy
-; of this software and associated documentation files (the "Software"), to deal
-; in the Software without restriction, including without limitation the rights
-; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-; copies of the Software, and to permit persons to whom the Software is
-; furnished to do so, subject to the following conditions:
-;
-; The above copyright notice and this permission notice shall be included in all
-; copies or substantial portions of the Software.
-;
-; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-; SOFTWARE.
+; This file contains methods that were built by Alberto Bengoa
+; for the stripe clojure binding: https://github.com/abengoa/clj-stripe
+
+; Copyright (c) 2011 Alberto Bengoa. All rights reserved.
+; The use and distribution terms for this software are covered by the
+; Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+; which can be found in the file epl-v10.html at the root of this distribution.
+; By using this software in any fashion, you are agreeing to be bound by
+; the terms of this license.
+; You must not remove this notice, or any other, from this software.
 
 (ns clj-hellosign.util
   (:require [clj-http.client :as client]
-    [clojure.data.json :as json]))
+            [clojure.data.json :as json]))
+
+(defn- remove-nulls
+  "Removes from a map the keys with nil value."
+  [m]
+  (into {} (remove (comp nil? second) m)))
+
+(defn merge-maps
+  "Merges several maps into one, removing any key with nil value."
+  [& maps]
+  (remove-nulls (reduce into {} maps)))
+
+(defn- append-param
+  "Appends a URL parameter to a string."
+  [s name value]
+  (if value
+    (let [print-param (fn [n v] (str n "=" v))]
+      (if (and s (> (count s) 0))
+        (str s "&" (print-param name value))
+        (print-param name value)))
+    s))
+
+(defn url-with-optional-params
+  "If parameters are provided, creates a parametrized URL as
+  originalurl?param1name=param1value&param2name=param2value&..."
+  [url m [& param-names]]
+  (let [params-str (reduce #(append-param %1 %2 (get m %2 nil)) nil param-names)]
+    (str url (if params-str (str "?" params-str) ""))))
 
 (defn post-request
   "POSTs to a URL using the provided API key and parameters."
