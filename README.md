@@ -1,10 +1,16 @@
-# clj-hellosign
+# clj-hellosign [![Build Status](https://travis-ci.org/cmpaul/clj-hellosign.svg)](https://travis-ci.org/cmpaul/clj-hellosign)
 
-A Clojure library that provides bindings for the HelloSign API.
+A Clojure library that provides bindings for the [HelloSign API](https://www.hellosign.com/api/documentation).
 
 ## Usage
 
-clj-hellosign wraps the HelloSign API. For a more detailed explanation of available endpoints and parameters, visit https://www.hellosign.com/api/documentation.
+Add clj-hellosign to the `:dependencies` list in your project.clj file:
+
+[cmpaul/clj-hellosign "0.0.1"]
+
+# TODO
+* Finish adding all endpoints!
+* Deploy to clojars
 
 ## License
 
