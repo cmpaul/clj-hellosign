@@ -26,6 +26,10 @@
   (:require [clj-hellosign.util :as util]))
 
 (defn get-account
-  "Executes a GET request for a user account."
+  "Creates a GET request for a user account.
+  Execute with core/execute."
   []
+  {:operation :get-account})
+
+(defmethod execute :get-account [_]
   (util/get-request *hellosign-api-key* (str api-root "/account")))
