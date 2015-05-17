@@ -24,8 +24,19 @@
   (:use [clj-hellosign core account])
   (:require [clojure.test :refer :all]))
 
+; API key used for testing
+(def test-api-key (config :hellosign-test-key))
+
 (deftest get-account-test
   (testing "GET /account"
-    (def acct (get-account))
-    (println acct)
-    (is (= 1 1))))
+    (testing "operation"
+      ; Make sure the get-account fn returns the correct operation
+      (def get-account-op (get-account))
+      (is (= get-account-op {:operation :get-account})))
+    (testing "result"
+      ; Make the call to GET /account
+      (def get-account-result (with-api-key test-api-key (execute get-account-op)))
+      ; Make sure the account object is readable and items are accessible
+      (def account-object (get get-account-result :account))
+      (is (not (nil? account-object)))
+      (is (not (nil? (get account-object :email_address)))))))
