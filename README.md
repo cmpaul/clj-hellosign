@@ -10,6 +10,47 @@ Add clj-hellosign to the `:dependencies` list in your project.clj file:
 [cmpaul/clj-hellosign "0.0.1"]
 ```
 
+All function calls in this wrapper require two things:
+1. They must be wrapped with a `with-api-key` command to bind your API key.
+2. They must be invoked with an `execute` command.
+
+```clojure
+(with-api-key "YOUR_API_KEY"
+  (execute fn-1)
+  ...
+  (execute fn-n))
+```
+
+### Accounts
+
+#### GET /account
+
+```clojure
+(with-api-key "YOUR_API_KEY"
+  (prn (execute get-account)))
+```
+
+#### POST /account
+
+```clojure
+(with-api-key "YOUR_API_KEY"
+  (execute (post-account (callback-url "https://yourcallback.com")))
+```
+
+#### POST /account/create
+
+```clojure
+(with-api-key "YOUR_API_KEY"
+  (execute (create-account (email "new_account@example.com")))
+```
+
+#### POST /account/verify
+
+```clojure
+(with-api-key "YOUR_API_KEY"
+  (execute (verify-account (email "account@example.com")))
+```
+
 # TODO
 * Finish adding all endpoints!
     * [x] /account
@@ -44,4 +85,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
+
+Core parts of this library were built by Alberto Bengoa and are covered by the Eclipse Public License:
+
+```
+Copyright (c) 2011 Alberto Bengoa. All rights reserved.
+The use and distribution terms for this software are covered by the
+Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+which can be found in the file epl-v10.html at the root of this distribution.
+By using this software in any fashion, you are agreeing to be bound by
+the terms of this license.
+You must not remove this notice, or any other, from this software.
 ```
