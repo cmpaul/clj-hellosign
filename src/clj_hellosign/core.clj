@@ -23,8 +23,7 @@
 (ns clj-hellosign.core
   "Core functions for the HelloSign API"
   (:use [clojure.java.io])
-  (:require [clj-hellosign.util :as util]
-            [clojure.edn :as edn]))
+  (:require [clojure.edn :as edn]))
 
 (defonce ^:dynamic *hellosign-api-key* nil)
 
